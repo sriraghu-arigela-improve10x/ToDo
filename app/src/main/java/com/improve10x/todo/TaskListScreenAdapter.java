@@ -8,13 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskListScreenAdapter extends RecyclerView.Adapter<TaskListScreenViewHolder> {
 
-    public ArrayList<TaskListScreen> taskListScreensList;
+    public List<TaskListScreen> taskListScreensList;
 
-    public void setData(ArrayList<TaskListScreen> taskListScreens) {
+    public void setData(List<TaskListScreen> taskListScreens) {
         taskListScreensList = taskListScreens;
+        notifyDataSetChanged();
     }
     @NonNull
     @Override

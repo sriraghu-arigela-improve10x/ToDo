@@ -11,6 +11,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TaskListScreenActivity extends AppCompatActivity {
 
@@ -26,6 +31,30 @@ public class TaskListScreenActivity extends AppCompatActivity {
         taskListScreenAddBtn();
         setData();
         taskListScreensRv();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchData();
+    }
+
+    public void fetchData() {
+        ToDoApi toDoApi = new ToDoApi();
+        ToDoService toDoService = toDoApi.createToDoService();
+        Call<List<TaskListScreen>> call = toDoService.fetchTasks();
+        call.enqueue(new Callback<List<TaskListScreen>>() {
+            @Override
+            public void onResponse(Call<List<TaskListScreen>> call, Response<List<TaskListScreen>> response) {
+                List<TaskListScreen> taskListScreens = response.body();
+                taskListScreenAdapter.setData(taskListScreens);
+            }
+
+            @Override
+            public void onFailure(Call<List<TaskListScreen>> call, Throwable t) {
+                Toast.makeText(TaskListScreenActivity.this, "Try after some time", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void taskListScreenAddBtn() {
@@ -47,7 +76,7 @@ public class TaskListScreenActivity extends AppCompatActivity {
     public void setData() {
         taskListScreensId = new ArrayList<>();
 
-        TaskListScreen getVegetables = new TaskListScreen();
+       /* TaskListScreen getVegetables = new TaskListScreen();
         getVegetables.title = "Get Vegetables";
         getVegetables.message = "for 1 week";
         taskListScreensId.add(getVegetables);
@@ -65,6 +94,6 @@ public class TaskListScreenActivity extends AppCompatActivity {
         TaskListScreen breakFast = new TaskListScreen();
         breakFast.title = "Healthy breakfast for a better morning";
         breakFast.message = "for 1 week";
-        taskListScreensId.add(breakFast);
+        taskListScreensId.add(breakFast);*/
     }
 }
